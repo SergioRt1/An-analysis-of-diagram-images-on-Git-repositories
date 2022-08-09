@@ -1,7 +1,6 @@
 import hashlib
 import io
 import os
-import time
 
 from PIL import Image
 from PIL.Image import Resampling

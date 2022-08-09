@@ -11,6 +11,7 @@ from scrapper.normalizer import normalize_image_to_rgb
 __authors__ = "Diaz Chica Luis Felipe, Rodriguez Torres Sergio Andres"
 __license__ = "Apache 2.0"
 
+os.chdir('../')
 
 def scroll_to_end(wd):
     element = wd.find_element_by_tag_name('body')

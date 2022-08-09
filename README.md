@@ -41,6 +41,8 @@ Lindholmen and GHTorrent, but you can adapt the code to any CSV with a list of r
 This module is a helper tool to label images in a dataset, using opencv library we show every image in a folder, and you
 can input any key in the keyboard to map the category assign to that image
 
+![](images/labeler.gif)
+
 ```
 python labeler.py
 ```
@@ -49,6 +51,8 @@ python labeler.py
 
 The scrapper is a tool that uses selenium to search images in _Google images_ and download them in your
 local desktop, set the term to search for inside the script and run it!
+
+![](images/scrapper.gif)
 
 ```
 python scrapper/scrapper.py
