@@ -7,8 +7,8 @@ matplotlib==3.5.2
 opencv-python==4.5.5.64
 Pillow==9.1.0
 
-# If you have an X86 CPU architecture use tensorflow==2.8.0 instead
-tensorflow-macos==2.8.0
+# If you have an X86 CPU architecture use tensorflow==2.9.1 instead and remove metal
+tensorflow-macos==2.9.1
 tensorflow-metal
 
 keras

@@ -24,8 +24,7 @@ def labeler(image_dir: str, csv_path):
             '3': 'Class Diagram',
             '4': 'Component Diagram',
             '5': 'Use Case Diagram',
-            '6': 'AWS',
-            '7': 'Azure',
+            '6': 'Cloud',
             '0': 'None',
         }
 
