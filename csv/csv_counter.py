@@ -34,7 +34,7 @@ def read_results_csv(prediction_csv_path: str):
     for category in sorted(cat.keys()):
         print(
             f'{category}: {cat[category]}, diff {cat[category] - cat_valid[category]}, prob: {cat_prob_m[category] / cat[category]:.4f}, {cat[category] / total * 100:.2f}%, repos: {len(cat_repo[category])} {len(cat_repo[category])/len(total_repos)*100:.2f}%')
-    print(f'Total: {total}, repos: {len(total_repos)}, with diagram {len(any_d_repo)}, {len(any_d_repo)/len(total_repos)*100:.2f}')
+    print(f'Total: {total}, repos: {len(total_repos)}, with diagram {len(any_d_repo)}, {len(any_d_repo)/len(total_repos):.2%}')
 
 
 def get_csv_reader(csv_path: str):

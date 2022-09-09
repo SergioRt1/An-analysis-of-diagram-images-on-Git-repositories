@@ -7,16 +7,14 @@ from pathlib import Path
 dataset_folder = 'scrapper/images/use_case_diagram/'
 dataset_csv = 'csv/scrapped_images.csv'
 
-os.chdir('../')
-
 
 def is_header(row):
     return row[0] == 'Name'
 
 
-def csv_to_dict():
+def csv_to_dict(csv_path: str):
     images_map = {}
-    with open(dataset_csv, 'r') as dataset_metadata_file:
+    with open(csv_path, 'r') as dataset_metadata_file:
         dataset_metadata = csv.reader(dataset_metadata_file)
         for row in dataset_metadata:
             if not is_header(row):
@@ -53,10 +51,13 @@ def write_filtered_csv(data):
 
 
 def main():
-    images_map = csv_to_dict()
+    os.chdir('../')
+
+    images_map = csv_to_dict(dataset_csv)
     data = clean_data(images_map)
 
     write_filtered_csv(data)
 
 
-main()
+if __name__ == '__main__':
+    main()

@@ -5,7 +5,7 @@ The next project contains multiple tools to extract and process data from reposi
 ### **Topics:**
 
 * [Git clone](clone/clone.py)
-* [Labeler](labeler/labeler.py)
+* [Labeler](labeling/labeler.py)
 * [Image Scrapper](scrapper/scrapper.py)
 * [Normalizer](scrapper/normalizer.py)
 * [Training notebook](train.ipynb)

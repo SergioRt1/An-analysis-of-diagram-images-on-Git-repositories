@@ -1,22 +1,28 @@
 import csv
 import os
+
 import cv2
-
-import constants
-
 from tqdm import tqdm
-
-os.chdir('../')
 
 
 def get_types(types):
     return "".join([f'\n\t{i}) {types[i]}' for i in types])
 
 
+def show_image(image_path: str):
+    img = cv2.imread(image_path)
+    if img is not None:
+        cv2.imshow('img', img)
+        key = cv2.waitKey(0) & 0xFF
+        if ord('0') <= key <= ord('9'):
+            return key
+    return None
+
+
 def labeler(image_dir: str, csv_path):
     with open(csv_path, 'a', newline='') as dataset_metadata_file:
         dataset_metadata = csv.writer(dataset_metadata_file)
-        #dataset_metadata.writerow(['Name', 'Category'])
+        # dataset_metadata.writerow(['Name', 'Category'])
 
         types = {
             '1': 'Activity Diagram',
@@ -31,16 +37,16 @@ def labeler(image_dir: str, csv_path):
         print(f'Image labeler helper, type: {get_types(types)}')
         images = os.listdir(image_dir)
         for i in tqdm(range(len(images))):
-            image = images[i]
-            img = cv2.imread(image_dir + image)
-            if img is None:
-                continue
-            cv2.imshow('img', img)
-            key = cv2.waitKey(0) & 0xFF
-            if key == 13:
-                continue
-
-            dataset_metadata.writerow([image, chr(key)])
+            image_name = images[i]
+            key = show_image(image_dir + image_name)
+            if key is not None:
+                dataset_metadata.writerow([image_name, chr(key)])
 
 
-labeler('scrapper/images/activity_diagram/', 'csv/cleaned_activity_diagram.csv')
+def main():
+    os.chdir('../')
+    labeler('scrapper/images/activity_diagram/', 'csv/cleaned_activity_diagram.csv')
+
+
+if __name__ == '__main__':
+    main()
