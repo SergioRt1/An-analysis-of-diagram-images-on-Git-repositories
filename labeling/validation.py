@@ -12,11 +12,10 @@ def validation_per_category(image_dir: str, csv_path: str):
 
     for img_name in images_map:
         img_cat = images_map[img_name]
-        if img_cat == '4':
-            if img_cat in images_by_cat:
-                images_by_cat[img_cat].append(img_name)
-            else:
-                images_by_cat[img_cat] = [img_name]
+        if img_cat in images_by_cat:
+            images_by_cat[img_cat].append(img_name)
+        else:
+            images_by_cat[img_cat] = [img_name]
     for cat in images_by_cat:
         images = images_by_cat[cat]
         print(cat)

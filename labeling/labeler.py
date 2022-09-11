@@ -9,13 +9,14 @@ def get_types(types):
     return "".join([f'\n\t{i}) {types[i]}' for i in types])
 
 
-def show_image(image_path: str):
+def show_image(image_path: str, tittle: str = 'Image'):
     img = cv2.imread(image_path)
     if img is not None:
-        cv2.imshow('img', img)
+        cv2.imshow(tittle, img)
         key = cv2.waitKey(0) & 0xFF
+        cv2.destroyAllWindows()
         if ord('0') <= key <= ord('9'):
-            return key
+            return chr(key)
     return None
 
 
@@ -40,7 +41,7 @@ def labeler(image_dir: str, csv_path):
             image_name = images[i]
             key = show_image(image_dir + image_name)
             if key is not None:
-                dataset_metadata.writerow([image_name, chr(key)])
+                dataset_metadata.writerow([image_name, key])
 
 
 def main():

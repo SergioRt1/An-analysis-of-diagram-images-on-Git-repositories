@@ -33,8 +33,9 @@ def read_results_csv(prediction_csv_path: str):
                 cat_valid[category] += 1
     for category in sorted(cat.keys()):
         print(
-            f'{category}: {cat[category]}, diff {cat[category] - cat_valid[category]}, prob: {cat_prob_m[category] / cat[category]:.4f}, {cat[category] / total * 100:.2f}%, repos: {len(cat_repo[category])} {len(cat_repo[category])/len(total_repos)*100:.2f}%')
-    print(f'Total: {total}, repos: {len(total_repos)}, with diagram {len(any_d_repo)}, {len(any_d_repo)/len(total_repos):.2%}')
+            f'{category}: {cat[category]}, diff {cat[category] - cat_valid[category]}, prob: {cat_prob_m[category] / cat[category]:.4f}, {cat[category] / total * 100:.2f}%, repos: {len(cat_repo[category])} {len(cat_repo[category]) / len(total_repos) * 100:.2f}%')
+    print(
+        f'Total: {total}, repos: {len(total_repos)}, with diagram {len(any_d_repo)}, {len(any_d_repo) / len(total_repos):.2%}')
 
 
 def get_csv_reader(csv_path: str):
@@ -43,7 +44,7 @@ def get_csv_reader(csv_path: str):
     return csv.reader(csv_file, delimiter=',')
 
 
-def get_merge_csv(prediction_csv_path: str, images_csv_path: str, dest_path: str):
+def merge_csv(prediction_csv_path: str, images_csv_path: str, dest_path: str):
     prediction_csv = get_csv_reader(prediction_csv_path)
     images_csv = get_csv_reader(images_csv_path)
     csv_file = open(dest_path, mode='w')
@@ -66,11 +67,13 @@ def get_merge_csv(prediction_csv_path: str, images_csv_path: str, dest_path: str
     print(f'Discarded: {discarded}')
 
 
-def read_final_csv(csv_path: str):
+def read_merged_csv(csv_path: str):
     cat = defaultdict(lambda: 0)
     cat_date = defaultdict(lambda: 0)
     cat_repo = defaultdict(lambda: set())
     total_repos = set()
+    any_diagram_diff = 0
+    any_diagram_count = 0
     total = 0
     empty = 0
     header = True
@@ -87,17 +90,27 @@ def read_final_csv(csv_path: str):
         if line[3] != '':
             image_date = datetime.fromisoformat(line[3])
             repo_date = datetime.fromisoformat(line[4])
-            cat_date[category] += (repo_date - image_date).days
+            diff_days = (repo_date - image_date).days
+            cat_date[category] += diff_days
             cat[category] += 1
             total += 1
+            if category != '0':
+                any_diagram_diff += diff_days
+                any_diagram_count += 1
         else:
             empty += 1
+
     for category in sorted(cat.keys()):
-        print(
-            f'{category}: {cat[category]}, days: {cat_date[category] / cat[category]}, {cat[category] / total * 100}%, repos: {len(cat_repo[category])}, {len(cat_repo[category])/len(total_repos)*100}%')
-    print(f'Total: {total}, repos: {len(total_repos)}, empty dates: {empty}')
+        print(f'{category}: {cat[category]}, days: {cat_date[category] / cat[category]}, {cat[category] / total * 100}%, repos: {len(cat_repo[category])}, {len(cat_repo[category]) / len(total_repos) * 100}%')
+    print(
+        f'Total: {total}, repos: {len(total_repos)}, empty dates: {empty}, any diagram: {any_diagram_count}, any diagram days: {any_diagram_diff / any_diagram_count}')
 
 
-# get_merge_csv('results.csv', 'images_on_repositories.csv', 'diagrams_dataset.csv')
-read_results_csv('results.csv')
-# read_final_csv('diagrams_dataset.csv')
+def main():
+    read_results_csv('results.csv')
+    merge_csv('results.csv', 'images_on_repositories.csv', 'diagrams_dataset_v2.csv')
+    read_merged_csv('diagrams_dataset_v2.csv')
+
+
+if __name__ == '__main__':
+    main()
