@@ -49,17 +49,26 @@ def merge_csv(prediction_csv_path: str, images_csv_path: str, dest_path: str):
     images_csv = get_csv_reader(images_csv_path)
     csv_file = open(dest_path, mode='w')
     csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(['Repository', 'Name', 'Category', 'Img last update', 'Repo last update', 'Path'])
+    csv_writer.writerow(
+        ['Repository', 'Name', 'Category', 'Img last update', 'Repo last update', 'Path', 'Prob None',
+         'Prob Activity Diagram', 'Prob Sequence Diagram', 'Prob Class Diagram', 'Prob Component Diagram',
+         'Prob Use Case Diagram', 'Prob Cloud Diagram']
+    )
     categories = {}
+    probs = {}
     discarded = 0
+
     for line in prediction_csv:
         category = line[1]
         categories[line[0]] = category
+        probs[line[0]] = line[2:]
     for line in images_csv:
         key = f'{line[0]}-#-{line[1]}'
         if key in categories:
             category = categories[key]
+            prob = probs[key]
             line.insert(2, category)
+            line.extend(prob)
             csv_writer.writerow(line)
         else:
             discarded += 1
