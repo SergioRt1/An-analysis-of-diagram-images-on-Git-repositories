@@ -18,7 +18,7 @@ ipython_config.py
 
 # Images
 toProcess/
-scrapper/images/
+scrapping/images/
 normalized_data_set_diagrams/
 data_set/
 data_set_diagrams/

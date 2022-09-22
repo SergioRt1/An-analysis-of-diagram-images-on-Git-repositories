@@ -14,7 +14,8 @@ tensorflow-metal
 keras
 
 gitpython==3.1.27
-selenium~=3.141.0
+selenium~=4.4.3
+webdriver-manager==3.8.3
 requests~=2.27.1
 
 tqdm~=4.64.0

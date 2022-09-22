@@ -7,8 +7,6 @@ import constants
 
 from image_extractor import ImageExtractor
 
-os.chdir('../')
-
 
 def is_valid_row(filename):
     extension = '.' + filename.split('.')[-1]
@@ -34,7 +32,12 @@ def download_images():
                         request.urlretrieve(new_url, f'{constants.dataset_diagram_dir}{repo.replace("/", "_")[:-1]}-#-{filename}')
                         print("Downloaded " + url)
                     except:
-                        print("can't download "+url)
+                        print("can't download " + url)
 
 
-download_images()
+def main():
+    os.chdir('../')
+    download_images()
+
+
+main()

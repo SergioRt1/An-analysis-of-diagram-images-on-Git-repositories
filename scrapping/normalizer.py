@@ -52,6 +52,11 @@ def normalize_images(scr_folder: str, dest_folder: str):
     print(map_names)
 
 
-#i = Image.open('diag.jpg')
-#normalize_image_to_rgb(i, "", "test/")
-normalize_images('toProcess/', 'normalized_data_set_diagrams/')
+def main():
+    # i = Image.open('diag.jpg')
+    # normalize_image_to_rgb(i, "", "test/")
+    normalize_images('toProcess/', 'normalized_data_set_diagrams/')
+
+
+if __name__ == '__main__':
+    main()

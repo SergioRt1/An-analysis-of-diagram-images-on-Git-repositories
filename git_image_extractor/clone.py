@@ -10,7 +10,6 @@ import constants
 from image_extractor import ImageExtractor
 
 extractors = [ImageExtractor]
-os.chdir('../')
 
 
 def map_repo_name(name):
@@ -70,6 +69,8 @@ def extract_data(repo_name: str, repo, dataset_writer):
 
 
 def main(target_csv_path: str):
+    os.chdir('../')
+
     if not os.path.exists(constants.repos_dir):
         os.makedirs(constants.repos_dir)
 

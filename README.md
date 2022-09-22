@@ -6,10 +6,10 @@ The next project contains multiple tools to extract and process data from reposi
 
 * [Training notebook](train.ipynb)
 * [Prediction notebook](predict.ipynb)
-* [Git clone](clone/clone.py)
+* [Git clone](git_image_extractor/clone.py)
 * [Labeler](labeling/labeler.py)
-* [Image Scrapper](scrapper/scrapper.py)
-* [Normalizer](scrapper/normalizer.py)
+* [Image Scrapper](scrapping/scrapper.py)
+* [Normalizer](scrapping/normalizer.py)
 * [Validator](csv/validator.py)
 ---
 

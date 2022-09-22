@@ -2,11 +2,16 @@ import os
 import time
 
 import requests
+
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 from tqdm import tqdm
 
-from scrapper.normalizer import normalize_image_to_rgb
+from scrapping.normalizer import normalize_image_to_rgb
 
 __authors__ = "Diaz Chica Luis Felipe, Rodriguez Torres Sergio Andres"
 __license__ = "Apache 2.0"
@@ -14,14 +19,14 @@ __license__ = "Apache 2.0"
 os.chdir('../')
 
 def scroll_to_end(wd):
-    element = wd.find_element_by_tag_name('body')
+    element = wd.find_element(By.TAG_NAME, 'body')
     for i in range(50):
         element.send_keys(Keys.PAGE_DOWN)
         time.sleep(0.3)
 
 
 def fetch_image_urls(query: str, max_links_to_fetch: int, wd: webdriver, sleep_between_interactions: int = 1):
-    # build the google query
+    # build the Google query
     search_url = "https://www.google.com/search?safe=off&site=&tbm=isch&source=hp&q={q}&oq={q}&gs_l=img"
 
     # load the page
@@ -34,7 +39,7 @@ def fetch_image_urls(query: str, max_links_to_fetch: int, wd: webdriver, sleep_b
         scroll_to_end(wd)
 
         # get all image thumbnail results
-        thumbnail_results = wd.find_elements_by_css_selector("img.Q4LuWd")
+        thumbnail_results = wd.find_elements(By.CSS_SELECTOR, "img.Q4LuWd")
         number_results = len(thumbnail_results)
 
         print(f"Found: {number_results} search results. Extracting links from {results_start}:{number_results}")
@@ -48,7 +53,7 @@ def fetch_image_urls(query: str, max_links_to_fetch: int, wd: webdriver, sleep_b
                 continue
 
             # extract image urls    
-            actual_images = wd.find_elements_by_css_selector('img.n3VNCb')
+            actual_images = wd.find_elements(By.CSS_SELECTOR, 'img.n3VNCb')
             for actual_image in actual_images:
                 if actual_image.get_attribute('src') and 'http' in actual_image.get_attribute('src'):
                     image_urls.add(actual_image.get_attribute('src'))
@@ -61,9 +66,9 @@ def fetch_image_urls(query: str, max_links_to_fetch: int, wd: webdriver, sleep_b
         print("Found:", len(image_urls), "image links, looking for more ...")
         time.sleep(30)
 
-        # load_more_button = wd.find_elements_by_xpath('//input[@value="Show more results"]')
+        # load_more_button = wd.find_elements(By.XPATH, '//input[@value="Show more results"]')
 
-        # load_more_button = wd.find_element_by_css_selector(".mye4qd")
+        # load_more_button = wd.find_element(By.CSS_SELECTOR, ".mye4qd")
         # if load_more_button:
         # load_more_button[0].click()
 
@@ -81,19 +86,22 @@ def persist_image(folder_path: str, url: str):
         print(f"ERROR - Could not download {url} - {e}")
 
 
-def search_and_download(search_term: str, driver_path: str, target_path='./images', number_images=5):
+def search_and_download(search_term: str, target_path='./images', number_images=5):
     target_folder = os.path.join(target_path, '_'.join(search_term.lower().split(' ')))
 
     if not os.path.exists(target_folder):
         os.makedirs(target_folder)
 
-    with webdriver.Chrome(executable_path=driver_path) as wd:
+    with webdriver.Chrome(service=Service(ChromeDriverManager().install())) as wd:
         res = fetch_image_urls(search_term, number_images, wd=wd, sleep_between_interactions=0.5)
 
     for elem in tqdm(res):
         persist_image(target_folder, elem)
 
 
-DRIVER_PATH = "/Users/SergioAndresRodriguezTorres/Documents/automation/chromedriver"
+def main():
+    search_and_download(search_term="Activity Diagrams", number_images=1000)
 
-search_and_download(search_term="Activity Diagrams", driver_path=DRIVER_PATH, number_images=1000)
+
+if __name__ == '__main__':
+    main()
